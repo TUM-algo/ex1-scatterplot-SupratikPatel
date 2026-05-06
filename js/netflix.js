@@ -7,6 +7,7 @@ var width, height;
 var data; // loaded once in init()
 
 // TODO: declare your scales here (xScale, yScale, sizeScale, colorScale)
+let xScale, yScale, sizeScale, colorScale;
 
 
 // Called once when the page loads — loads data and sets up the static SVG structure.
