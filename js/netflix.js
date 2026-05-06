@@ -127,7 +127,21 @@ function update() {
   // TODO: Draw a color legend inside the '.legend' group
   // Use colorScale.domain() to get the category values.
   // For each value append a colored rect and a text label.
-
+  let legend= d3.select('.legend');
+  legend.selectAll('*').remove();
+  
+  let item= legend.selectAll('g').data(colorScale.domain()).join('g')
+    .attr('transform' , (d , i)=> "translate(0, " + (i * 20) + ")");
+    
+  item.append('rect')
+    .attr('width' , 10)
+    .attr('height' , 10)
+    .attr('fill' , d => colorScale(d));
+  item.append('text')
+    .attr('x' , 20)
+    .attr('y' , 10)
+    .text(d => d)
+    .style('font-size' , '12px');
 }
 
 
