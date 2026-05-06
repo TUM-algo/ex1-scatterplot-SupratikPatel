@@ -79,12 +79,33 @@ function update() {
   // sizeScale  — d3.scaleSqrt(),   domain from data extent, range [2, 18]
   // colorScale — d3.scaleOrdinal(d3.schemeTableau10), domain of unique category values
 
+  xScale= d3.scaleLinear()
+    .domain(d3.extent(data , d=> d[xField]))
+    .range([0 , width]);
+
+  yScale= d3.scaleLinear()
+    .domain(d3.extent(data, d=> d[yField]))
+    .range([height,0]);
+
+  sizeScale= d3.scaleSqrt()
+    .domain(d3.extent(data, d=> d[sizeField]))
+    .range([2,18]);
+
+// **Note on genres:** There are 19 unique genres but `schemeTableau10` only has 10 colors. Consider mapping only the top genres and grouping the rest as `"Other".`
+// so top 9 and then others
+
+  colorScale= d3.scaleOrdinal(d3.schemeTableau10)
+
 
   // TODO: Update x-axis, y-axis, and axis labels
   // Hint: d3.select('.x-axis').call(d3.axisBottom(xScale))
   //       d3.select('.x-label').text(xField)
 
-
+  d3.select('.x-axis').transition().call(d3.axisBottom(xScale));
+  d3.select('.x-label').text(xField);
+  d3.select('.y-axis').transition().call(d3.axisLeft(yScale));
+  d3.select('.y-label').text(yField);
+  
   // TODO: Draw circles — one per movie
   // Use vis.selectAll('circle').data(data).join('circle') then set:
   //   .attr('cx', d => xScale(d[xField]))
