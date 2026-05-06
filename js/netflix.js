@@ -92,10 +92,14 @@ function update() {
     .range([2,18]);
 
 // **Note on genres:** There are 19 unique genres but `schemeTableau10` only has 10 colors. Consider mapping only the top genres and grouping the rest as `"Other".`
-// so top 9 and then others
-
+// so top 9 and then others , https://d3js.org/d3-array/group#rollups
+  let categoryCounts= d3.rollups(data, v=> v.length,d=> d[colorField]);
+  let topCategories= categoryCounts.sort((a, b) => b[1] - a[1]).slice(0, 9).map(d => d[0]);             
+  
   colorScale= d3.scaleOrdinal(d3.schemeTableau10)
+    .domain([...topCategories, "Other"]);
 
+  let getCategory= d=> topCategories.includes(d[colorField]) ? d[colorField] : "Other";
 
   // TODO: Update x-axis, y-axis, and axis labels
   // Hint: d3.select('.x-axis').call(d3.axisBottom(xScale))
@@ -117,7 +121,7 @@ function update() {
     .attr('cx' , d => xScale(d[xField]))
     .attr('cy' , d => yScale(d[yField]))
     .attr('r' , d => sizeScale(d[sizeField]))
-    .attr('fill' , d => colorScale())
+    .attr('fill' , d => colorScale(getCategory(d)))
     .on('click' , showMovie);
 
   // TODO: Draw a color legend inside the '.legend' group
