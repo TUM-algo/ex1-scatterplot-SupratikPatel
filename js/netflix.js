@@ -105,7 +105,7 @@ function update() {
   d3.select('.x-label').text(xField);
   d3.select('.y-axis').transition().call(d3.axisLeft(yScale));
   d3.select('.y-label').text(yField);
-  
+
   // TODO: Draw circles — one per movie
   // Use vis.selectAll('circle').data(data).join('circle') then set:
   //   .attr('cx', d => xScale(d[xField]))
@@ -113,7 +113,12 @@ function update() {
   //   .attr('r',  ...)
   //   .attr('fill', ...)
   //   .on('click', showMovie)
-
+  vis.selectAll('circle').data(data).join('circle')
+    .attr('cx' , d => xScale(d[xField]))
+    .attr('cy' , d => yScale(d[yField]))
+    .attr('r' , d => sizeScale(d[sizeField]))
+    .attr('fill' , d => colorScale())
+    .on('click' , showMovie);
 
   // TODO: Draw a color legend inside the '.legend' group
   // Use colorScale.domain() to get the category values.
